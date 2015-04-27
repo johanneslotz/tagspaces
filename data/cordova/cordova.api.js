@@ -10,7 +10,7 @@ define(function(require, exports, module) {
 
   var TSCORE = require("tscore");
   var TSPOSTIO = require("tspostioapi");
-
+  
   var attachFastClick = require('cordova/fastclick/fastclick.min');
 
   var fsRoot;
@@ -28,10 +28,17 @@ define(function(require, exports, module) {
     });
   };
 
+  dropbox_linked = function() {
+    alert("DropboxSync: linked!");
+  };
+
   // Cordova loaded and can be used
   function onDeviceReady() {
     console.log("Device Ready:"); // "+device.platform+" - "+device.version);
 
+    if (DropboxSync) {
+      DropboxSync.link();
+    }
     // Redifining the back button
     document.addEventListener("backbutton", function(e) {
       TSCORE.FileOpener.closeFile();
@@ -203,7 +210,7 @@ define(function(require, exports, module) {
       } 
     } else {
       //Android 
-      if (path.indexOf(fsRoot.fullPath) >= 0) {
+      if (fsRoot.fullPath && path.indexOf(fsRoot.fullPath) >= 0) {
         path = path.substring(fsRoot.fullPath.length + 1, path.length);
       }
     }

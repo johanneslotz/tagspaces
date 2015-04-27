@@ -26,6 +26,7 @@ var isOSX = navigator.appVersion.indexOf("Mac")!==-1;
 var isWin = navigator.appVersion.indexOf("Win")!==-1;
 //cordova ios handleOpenURL is global 
 var handleOpenURL;
+var dropbox_linked;
 
 // Check for running in node-webkit
 try {
