@@ -96,7 +96,7 @@ define(function(require, exports, module) {
     $('#reloadDocumentKeyBinding').val(TSCORE.Config.getReloadDocumentKeyBinding());
     $('#saveDocumentKeyBinding').val(TSCORE.Config.getSaveDocumentKeyBinding());
     $('#documentPropertiesKeyBinding').val(TSCORE.Config.getPropertiesDocumentKeyBinding());
-    $('#dropBoxSyncSwitch').attr('checked',TSCORE.Config.getCloudSyncSettingsDropBox());
+    $('#dropBoxSyncSwitch').attr('checked', TSCORE.Config.getCloudSyncSettingsDropBox());
 
     $('#perspectiveList').empty();
     TSCORE.Config.getPerspectives().forEach(function(value) {

@@ -98,9 +98,7 @@ define(function(require, exports, module) {
   function cloudSyncDirectory() {
     var dropboxPath = '/' + TSCORE.currentPath;
     //var dirToSync = fsRoot.fullPath + dropboxPath;
-    console.log("cloudSyncDirectory: "+ fsRoot.nativeURL + " dropboxPath: "+ dropboxPath);
-
-    //alert('cloudSyncDirectory: ' + dirToSync);
+    console.log("cloudSyncDirectory: " + fsRoot.nativeURL + " dropboxPath: " + dropboxPath);
 
     //Upload a folder to Dropbox:
     /*DropboxSync.uploadFolder({
