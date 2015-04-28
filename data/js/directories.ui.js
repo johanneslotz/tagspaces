@@ -520,6 +520,13 @@ define(function(require, exports, module) {
       $('#dialogCreateFolderConnection').on('shown.bs.modal', function() {
         $('#folderLocation').focus();
       });
+      $('#cloudSyncCheckbox').on('change', function() {
+         if ($(this).is(':checked')) {
+            console.log($(this).val() + ' is now checked');
+        } else {
+            console.log($(this).val() + ' is now unchecked');
+        }
+      });
       $('#dialogCreateFolderConnection').modal({
         backdrop: 'static',
         show: true

@@ -96,6 +96,8 @@ define(function(require, exports, module) {
     $('#reloadDocumentKeyBinding').val(TSCORE.Config.getReloadDocumentKeyBinding());
     $('#saveDocumentKeyBinding').val(TSCORE.Config.getSaveDocumentKeyBinding());
     $('#documentPropertiesKeyBinding').val(TSCORE.Config.getPropertiesDocumentKeyBinding());
+    $('#dropBoxSyncSwitch').attr('checked',TSCORE.Config.getCloudSyncSettingsDropBox());
+
     $('#perspectiveList').empty();
     TSCORE.Config.getPerspectives().forEach(function(value) {
       addPerspective($('#perspectiveList'), value.id);
@@ -153,6 +155,7 @@ define(function(require, exports, module) {
     TSCORE.Config.setReloadDocumentKeyBinding(parseKeyBinding($('#reloadDocumentKeyBinding').val()));
     TSCORE.Config.setSaveDocumentKeyBinding(parseKeyBinding($('#saveDocumentKeyBinding').val()));
     TSCORE.Config.setPropertiesDocumentKeyBinding(parseKeyBinding($('#documentPropertiesKeyBinding').val()));
+    TSCORE.Config.setPropertiesDocumentKeyBinding($('#dropBoxSyncSwitch').is(':checked'));
 
     var interfaceLang = $('#languagesList').val();
     TSCORE.Config.setInterfaceLangauge(interfaceLang);

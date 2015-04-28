@@ -308,6 +308,9 @@ define(function (require, exports, module) {
                     }
                 ]
             }
+        ],
+        "suppotedCloudServices": [
+            {"type":"dropbox","connected":"true"}
         ]
     };
 });

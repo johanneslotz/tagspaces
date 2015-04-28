@@ -885,6 +885,22 @@ define(function(require, exports, module) {
     }
   }
 
+  function setCloudSyncSettingsDropBox(value) {
+    if (exports.Settings.suppotedCloudServices === undefined) {
+      exports.Settings.suppotedCloudServices = exports.DefaultSettings.suppotedCloudServices;
+    }
+    exports.Settings.suppotedCloudServices[0].connected = value;
+    saveSettings();
+
+  }
+
+  function getCloudSyncSettingsDropBox() {
+    if (exports.Settings.suppotedCloudServices === undefined) {
+      exports.Settings.suppotedCloudServices = exports.DefaultSettings.suppotedCloudServices;
+    }
+    return exports.Settings.suppotedCloudServices[0].connected;
+  }
+
   // Public API definition
   exports.upgradeSettings = upgradeSettings;
   exports.getPerspectives = getPerspectives;
@@ -984,4 +1000,7 @@ define(function(require, exports, module) {
   exports.loadDefaultSettings = loadDefaultSettings;
   exports.saveSettings = saveSettings;
   exports.addTagGroup = addTagGroup;
+  // Cloud settions
+  exports.getCloudSyncSettingsDropBox = getCloudSyncSettingsDropBox;
+  exports.setCloudSyncSettingsDropBox = setCloudSyncSettingsDropBox;
 });

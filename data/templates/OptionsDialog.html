@@ -12,6 +12,7 @@
                     <li><a href="#filetypes" data-toggle="tab" class="optionsTitle" data-i18n="ns.dialogs:fileTypeTab">File Types</a></li>
                     <li><a href="#keyBindings" data-toggle="tab" class="optionsTitle" data-i18n="ns.dialogs:keyBindingsTab">Key Bindings</a></li>
                     <li><a href="#experimental" data-toggle="tab" class="optionsTitle" data-i18n="ns.dialogs:experimentalTab">Experimental*</a></li>
+                    <li><a href="#cloudSync" data-toggle="tab" class="optionsTitle" data-i18n="ns.dialogs:cloudSyncTab">Cloud sync</a></li>
                 </ul>
             </div>
             <div class="modal-body form" style="height: 380px;" id="optionsAccordion">
@@ -199,6 +200,20 @@
                             <label for='extensionsPathInput' data-i18n="ns.dialogs:extensionsFolder">Extensions folder (default value is "ext")</label>
                             <input type='text' class='form-control' id='extensionsPathInput' data-i18n="[placeholder]ns.dialogs:extensionsFolderPlaceholder"/>
                         </div>
+                    </div>
+                    <div class="tab-pane" id="cloudSync" style="height: 360px; overflow-y: auto;">
+                         <div class="col-sm-2">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="dropBoxSyncSwitch">
+                                    <label class="onoffswitch-label" for="dropBoxSyncSwitch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-10" style="margin-top: 0;">
+                                <span>Synchronize location folders with your DropBox acount</span>
+                            </div>
                     </div>
                 </div>
             </div>

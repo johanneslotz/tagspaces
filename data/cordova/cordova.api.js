@@ -28,17 +28,27 @@ define(function(require, exports, module) {
     });
   };
 
+  // Called from the onActivityResult method in the plugin when linking is successful.
   dropbox_linked = function() {
     alert("DropboxSync: linked!");
   };
 
+  // Called by observer in the plugin when there's a change 
+  // to the status of background synchronization (download/upload).
+  // status is a string variable that will be 'sync' or 'none'.
+  dropbox_onSyncStatusChange = function(status) { 
+    alert("dropbox_onSyncStatusChange: " + status);
+  };
+  
+  // Called by observer in the plugin when a file is changed.
+  dropbox_fileChange = function() { 
+    alert("dropbox_fileChange");
+  };
+  
   // Cordova loaded and can be used
   function onDeviceReady() {
     console.log("Device Ready:"); // "+device.platform+" - "+device.version);
 
-    if (DropboxSync) {
-      DropboxSync.link();
-    }
     // Redifining the back button
     document.addEventListener("backbutton", function(e) {
       TSCORE.FileOpener.closeFile();
@@ -71,6 +81,38 @@ define(function(require, exports, module) {
         navigator.splashscreen.hide();
       }, 1000);
     }
+
+    if (DropboxSync) {
+      
+      DropboxSync.checkLink(function() { // success
+        // User is already authenticated with Dropbox.
+        console.log("Dropbox is linked");
+        cloudSyncDirectory();
+      }, function() { // fail
+        // User is not authenticated with Dropbox.
+        DropboxSync.link();
+      });
+    }
+  }
+
+  function cloudSyncDirectory() {
+    var dropboxPath = '/' + TSCORE.currentPath;
+    //var dirToSync = fsRoot.fullPath + dropboxPath;
+    console.log("cloudSyncDirectory: "+ fsRoot.nativeURL + " dropboxPath: "+ dropboxPath);
+
+    //alert('cloudSyncDirectory: ' + dirToSync);
+
+    //Upload a folder to Dropbox:
+    /*DropboxSync.uploadFolder({
+      folderPath: 'file:///storage/sdcard0', // required
+      dropboxPath: '/someFolder', // optional, defaults to root ('/')
+      doRecursive: true // optional, defaults to false
+    }, function() { // success
+      // dropboxFolderPath is the Dropbox folder you want to upload the files/folders into.
+      // The folder upload can be done recursively by setting doRecursive to true.
+    }, function() { // fail
+      // Handle error in fail callback.
+    });*/
   }
 
   function onDeviceResume() {
