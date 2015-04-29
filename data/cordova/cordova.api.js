@@ -96,21 +96,22 @@ define(function(require, exports, module) {
   }
 
   function cloudSyncDirectory() {
-    var dropboxPath = '/' + TSCORE.currentPath;
-    //var dirToSync = fsRoot.fullPath + dropboxPath;
-    console.log("cloudSyncDirectory: " + fsRoot.nativeURL + " dropboxPath: " + dropboxPath);
+    
+    var lastLocation = TSCORE.Config.getLastOpenedLocation();
+    var location = TSCORE.Config.getLocation(lastLocation);
 
-    //Upload a folder to Dropbox:
-    /*DropboxSync.uploadFolder({
-      folderPath: 'file:///storage/sdcard0', // required
-      dropboxPath: '/someFolder', // optional, defaults to root ('/')
-      doRecursive: true // optional, defaults to false
-    }, function() { // success
-      // dropboxFolderPath is the Dropbox folder you want to upload the files/folders into.
-      // The folder upload can be done recursively by setting doRecursive to true.
-    }, function() { // fail
-      // Handle error in fail callback.
-    });*/
+    if (location.path) {
+      //Upload a folder to Dropbox:
+      DropboxSync.uploadFolder({
+        folderPath:  'file:///storage/sdcard0/' + location.path, //'file:///storage/sdcard0/Music', // required
+        dropboxPath: '/someFolder', // optional, defaults to root ('/')
+        doRecursive: true // optional, defaults to false
+      }, function() { // success
+        alert("folder sync OK");
+      }, function() { // fail
+        alert("Handle error in fail callback.");
+      });   
+    }
   }
 
   function onDeviceResume() {

@@ -29,7 +29,12 @@ define(function(require, exports, module) {
   var locationTemplate = {
     'name': undefined,
     'path': undefined,
-    'perspective': undefined
+    'perspective': undefined,
+    'cloudConnections': []
+  };
+  var cloudConnectionsTemplate = {
+    'type': undefined,
+    'remoteFolder': undefined
   };
   var tagGroupTemplate = {
     'title': undefined,
@@ -757,7 +762,7 @@ define(function(require, exports, module) {
     exports.Settings.tagGroups[targetPosition] = tmpTagGroup;
     saveSettings();
   };
-  var createLocation = function(name, location, perspectiveId) {
+  var createLocation = function(name, location, perspectiveId, cloudSync) {
     var newLocationModel = JSON.parse(JSON.stringify(locationTemplate));
     name = name.replace('\\', '\\\\');
     name = name.replace('\\\\\\', '\\\\');
@@ -777,11 +782,17 @@ define(function(require, exports, module) {
       }
     });
     if (createLoc) {
+      if (cloudSync) {
+        var newcloudConnectionsTemplateModel = JSON.parse(JSON.stringify(cloudConnectionsTemplate));
+        newcloudConnectionsTemplateModel.type = "DropBox";
+        newcloudConnectionsTemplateModel.remoteFolder = "/TagSpaces/" + newLocationModel.name;
+        newLocationModel.cloudConnections.push(newcloudConnectionsTemplateModel);
+      }
       exports.Settings.tagspacesList.push(newLocationModel);
       saveSettings();
     }
   };
-  var editLocation = function(oldName, newName, newLocation, perspectiveId) {
+  var editLocation = function(oldName, newName, newLocation, perspectiveId, cloudSync) {
     //        name = name.replace("\\", "\\\\");
     //        name = name.replace("\\\\\\", "\\\\");
     //        name = name.replace("\\\\\\\\", "\\\\");   

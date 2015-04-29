@@ -155,7 +155,7 @@ define(function(require, exports, module) {
     TSCORE.Config.setReloadDocumentKeyBinding(parseKeyBinding($('#reloadDocumentKeyBinding').val()));
     TSCORE.Config.setSaveDocumentKeyBinding(parseKeyBinding($('#saveDocumentKeyBinding').val()));
     TSCORE.Config.setPropertiesDocumentKeyBinding(parseKeyBinding($('#documentPropertiesKeyBinding').val()));
-    TSCORE.Config.setPropertiesDocumentKeyBinding($('#dropBoxSyncSwitch').is(':checked'));
+    TSCORE.Config.setCloudSyncSettingsDropBox($('#dropBoxSyncSwitch').is(':checked'));
 
     var interfaceLang = $('#languagesList').val();
     TSCORE.Config.setInterfaceLangauge(interfaceLang);
