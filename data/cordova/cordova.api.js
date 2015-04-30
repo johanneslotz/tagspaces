@@ -31,13 +31,20 @@ define(function(require, exports, module) {
   // Called from the onActivityResult method in the plugin when linking is successful.
   dropbox_linked = function() {
     alert("DropboxSync: linked!");
+    var lastLocation = TSCORE.Config.getLastOpenedLocation();
+    cloudSyncDirectory(lastLocation);
   };
 
   // Called by observer in the plugin when there's a change 
   // to the status of background synchronization (download/upload).
   // status is a string variable that will be 'sync' or 'none'.
   dropbox_onSyncStatusChange = function(status) { 
+    var lastLocation = TSCORE.Config.getLastOpenedLocation();
     alert("dropbox_onSyncStatusChange: " + status);
+    //if(status === 'sync') {
+    //  cloudSyncDirectory(lastLocation);
+    //}
+
   };
   
   // Called by observer in the plugin when a file is changed.
@@ -81,36 +88,47 @@ define(function(require, exports, module) {
         navigator.splashscreen.hide();
       }, 1000);
     }
+  }
+
+  var cloudSyncDirectory = function(location) {
+
+    var cloudSync = TSCORE.Config.getLocation(location);
+    var cloudSyncObj = null; 
+    cloudSync.cloudConnections.forEach(function(e, i) {
+      if (e.type === 'DropBox') {
+        cloudSyncObj = e;
+        cloudSyncObj.path = cloudSync.path;
+      }
+    });
 
     if (DropboxSync) {
-      
       DropboxSync.checkLink(function() { // success
-        // User is already authenticated with Dropbox.
-        console.log("Dropbox is linked");
-        cloudSyncDirectory();
+        syncDirectoryDropBox(cloudSyncObj);
       }, function() { // fail
         // User is not authenticated with Dropbox.
         DropboxSync.link();
       });
     }
-  }
+  };
 
-  function cloudSyncDirectory() {
-    
-    var lastLocation = TSCORE.Config.getLastOpenedLocation();
-    var location = TSCORE.Config.getLocation(lastLocation);
+  function syncDirectoryDropBox(locationObj) {
 
-    if (location.path) {
-      //Upload a folder to Dropbox:
+    if (fsRoot.fullPath && locationObj.path && locationObj.remoteFolder) {
+      var folderFullPath = fsRoot.fullPath + '/' + locationObj.path; 
+      console.log("Dropbox sync: " + folderFullPath + " remoteFolder: " +  locationObj.remoteFolder);
+      
       DropboxSync.uploadFolder({
-        folderPath:  'file:///storage/sdcard0/' + location.path, //'file:///storage/sdcard0/Music', // required
-        dropboxPath: '/someFolder', // optional, defaults to root ('/')
+        folderPath:  folderFullPath, //'file:///storage/sdcard0/Music', // required
+        dropboxPath: locationObj.remoteFolder, //'/someFolder',optional, defaults to root ('/')
         doRecursive: true // optional, defaults to false
       }, function() { // success
-        alert("folder sync OK");
+        alert("folder: " + locationObj.path + " sync OK");
+        DropboxSync.addObserver(locationObj.remoteFolder);
       }, function() { // fail
         alert("Handle error in fail callback.");
-      });   
+      });  
+    } else {
+      alert("cloudSyncDirectory: missing path(s)");
     }
   }
 
@@ -840,5 +858,5 @@ define(function(require, exports, module) {
   exports.checkNewVersion = checkNewVersion;
   exports.getFileProperties = getFileProperties;
   exports.handleStartParameters = handleStartParameters;
-
+  exports.cloudSyncDirectory = cloudSyncDirectory;
 });

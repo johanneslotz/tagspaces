@@ -814,6 +814,19 @@ define(function(require, exports, module) {
           value.name = newName;
           value.path = newLocation;
           value.perspective = perspectiveId;
+
+          if (cloudSync) {
+            var newcloudConnectionsTemplateModel = JSON.parse(JSON.stringify(cloudConnectionsTemplate));
+            newcloudConnectionsTemplateModel.type = "DropBox";
+            newcloudConnectionsTemplateModel.remoteFolder = "/TagSpaces/" + value.name;
+            if (value.cloudConnections.length === 0) {
+              value.cloudConnections.push(newcloudConnectionsTemplateModel);  
+            } else {
+              value.cloudConnections[0] = newcloudConnectionsTemplateModel;
+            }  
+          } else {
+            value.cloudConnections = [];
+          }
         }
       });
       saveSettings();

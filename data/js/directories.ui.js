@@ -393,21 +393,32 @@ define(function(require, exports, module) {
 
   function createLocation() {
     var locationPath = $('#folderLocation').val();
-    TSCORE.Config.createLocation($('#connectionName').val(), locationPath, $('#locationPerspective').val(), $('#cloudSyncCheckbox').is(":checked"));
+    var checkSyncLocation = $('#cloudSyncCheckbox').is(":checked");
+    TSCORE.Config.createLocation($('#connectionName').val(), locationPath, $('#locationPerspective').val(), checkSyncLocation);
+    
     // Enable the UI behavior by not empty location list
     $('#createNewLocation').attr('title', $.i18n.t('ns.common:connectNewLocationTooltip')).tooltip('destroy');
     $('#locationName').prop('disabled', false);
     $('#selectLocation').prop('disabled', false);
     initLocations();
     openLocation(locationPath);
+
+    if (checkSyncLocation) {
+      TSCORE.IO.cloudSyncDirectory(locationPath);  
+    }
   }
 
   function editLocation() {
     var $connectionName2 = $('#connectionName2');
     var $folderLocation2 = $('#folderLocation2');
-    TSCORE.Config.editLocation($connectionName2.attr('oldName'), $connectionName2.val(), $folderLocation2.val(), $('#locationPerspective2').val());
+    var checkSyncLocation = $('#cloudSyncCheckbox').is(":checked");
+    TSCORE.Config.editLocation($connectionName2.attr('oldName'), $connectionName2.val(), $folderLocation2.val(), $('#locationPerspective2').val(), checkSyncLocation);
     initLocations();
     openLocation($folderLocation2.val());
+
+    if (checkSyncLocation) {
+      TSCORE.IO.cloudSyncDirectory($folderLocation2.val());  
+    }
   }
 
   function selectLocalDirectory() {
@@ -470,6 +481,8 @@ define(function(require, exports, module) {
       $('#dialogLocationEdit').on('shown.bs.modal', function() {
         $('#folderLocation2').focus();
       });
+      var isCloudEnabled = TSCORE.Config.getLocation(path).cloudConnections.length !== 0;
+      $('#cloudSyncCheckbox').prop("checked", isCloudEnabled);
       $('#dialogLocationEdit').modal({
         backdrop: 'static',
         show: true
