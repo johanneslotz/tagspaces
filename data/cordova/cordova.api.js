@@ -14,9 +14,8 @@ define(function(require, exports, module) {
   var attachFastClick = require('cordova/fastclick/fastclick.min');
 
   var fsRoot;
-
+  var sharedPrefKey = 'tagspaces.sharedPref';
   var urlFromIntent;
-
   document.addEventListener("deviceready", onDeviceReady, false);
   document.addEventListener("resume", onDeviceResume, false);
 
@@ -58,12 +57,37 @@ define(function(require, exports, module) {
     
     attachFastClick(document.body);
     getFileSystem();
+    //sharedPrefStore(sharedPrefKey, JSON.stringify(TSCORE.Config.Settings));
 
     if (isCordovaiOS) {
       setTimeout(function() {
         navigator.splashscreen.hide();
       }, 1000);
     }
+  }
+
+  function sharedPrefStore(key, value) {
+
+    var prefs = plugins.appPreferences;
+    if(!prefs) return;
+
+    prefs.store (function ok (ret) {
+      console.log("sharedPrefStore: " + value);
+    }, function fail (error) {
+       console.log(error);
+    }, key, value);
+  }
+
+  function sharedPrefFetch(key) {
+
+    var prefs = plugins.appPreferences;
+    if(!prefs) return;
+      
+    prefs.fetch (function ok (value) {
+      
+    }, function fail (error) {
+      console.log(error);
+    }, key);
   }
 
   function onDeviceResume() {
