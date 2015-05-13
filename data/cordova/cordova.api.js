@@ -57,7 +57,6 @@ define(function(require, exports, module) {
     
     attachFastClick(document.body);
     getFileSystem();
-    //sharedPrefStore(sharedPrefKey, JSON.stringify(TSCORE.Config.Settings));
 
     if (isCordovaiOS) {
       setTimeout(function() {
@@ -66,28 +65,26 @@ define(function(require, exports, module) {
     }
   }
 
-  function sharedPrefStore(key, value) {
-
-    var prefs = plugins.appPreferences;
-    if(!prefs) return;
-
-    prefs.store (function ok (ret) {
-      console.log("sharedPrefStore: " + value);
-    }, function fail (error) {
-       console.log(error);
-    }, key, value);
+  function saveSettings(settings) {
+    sharedPrefStore(sharedPrefKey, settings);
   }
 
-  function sharedPrefFetch(key) {
-
+  function sharedPrefStore(key, value) {
     var prefs = plugins.appPreferences;
-    if(!prefs) return;
-      
-    prefs.fetch (function ok (value) {
-      
-    }, function fail (error) {
-      console.log(error);
-    }, key);
+    if (prefs) {
+      prefs.store (function ok (val) {
+        console.log("sharedPrefStore: OK");
+      }, function fail (error) {
+        console.log(error);
+      }, key, value);
+    }
+  }
+
+  function sharedPrefFetch(key, ok, fail) {
+    var prefs = plugins.appPreferences;
+    if (prefs) {
+      prefs.fetch (ok, fail, key);
+    }
   }
 
   function onDeviceResume() {
@@ -816,5 +813,6 @@ define(function(require, exports, module) {
   exports.checkNewVersion = checkNewVersion;
   exports.getFileProperties = getFileProperties;
   exports.handleStartParameters = handleStartParameters;
-
+  exports.saveSettings = saveSettings;
+  exports.sharedPrefFetch = sharedPrefFetch;
 });
