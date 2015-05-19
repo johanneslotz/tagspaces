@@ -68,6 +68,10 @@ define(function(require, exports, module) {
   function saveSettings(settings) {
     sharedPrefStore(sharedPrefKey, settings);
   }
+  
+  function loadSettings(ok, fail) {
+    sharedPrefFetch(sharedPrefKey, ok, fail);
+  }
 
   function sharedPrefStore(key, value) {
     var prefs = plugins.appPreferences;
@@ -814,5 +818,5 @@ define(function(require, exports, module) {
   exports.getFileProperties = getFileProperties;
   exports.handleStartParameters = handleStartParameters;
   exports.saveSettings = saveSettings;
-  exports.sharedPrefFetch = sharedPrefFetch;
+  exports.loadSettings = loadSettings;
 });
