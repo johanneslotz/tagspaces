@@ -318,8 +318,24 @@ define(function(require, exports, module) {
     // Load new filtered data
     this.searchResults = TSCORE.Search.searchData(TSCORE.fileList, TSCORE.Search.nextQuery);
 
+    
+    var searchPrefix = TSCORE.Search.nextQuery.substring(0, 1);
+    if (searchPrefix == " ") {
+      var searchString = TSCORE.Search. nextQuery.substring(1);
+      for (var i = 0; i < TSCORE.fileList.length; i++) {
+        if (TSCORE.fileList[i][TSCORE.fileListFILEEXT] == "txt" | TSCORE.fileList[i][TSCORE.fileListFILEEXT] == "md") {
+          var fileContents = TSCORE.FileOpener.readTextFile(['file://', TSCORE.fileList[i][5]].join(''));
+          var hitLocation = fileContents.search(searchString); 
+          if (hitLocation > 0) {
+            var match = TSCORE.fileList[i].slice();
+            match[TSCORE.fileListTITLE] = ["in " , match[TSCORE.fileListTITLE] , " at " , parseInt(100 * hitLocation / fileContents.length) , "%"].join("");
+            this.searchResults.push(match);
+          }
+        } 
+      }  
+    }
+    
     this.fileTable.fnAddData(this.searchResults);
-
     var self = this;
 
     this.fileTable.$('tr')
