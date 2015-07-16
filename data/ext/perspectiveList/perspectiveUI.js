@@ -320,7 +320,7 @@ define(function(require, exports, module) {
 
     
     var searchPrefix = TSCORE.Search.nextQuery.substring(0, 1);
-    if (searchPrefix == " ") {
+    if (searchPrefix == "_") {
       var searchString = TSCORE.Search. nextQuery.substring(1);
       for (var i = 0; i < TSCORE.fileList.length; i++) {
         if (TSCORE.fileList[i][TSCORE.fileListFILEEXT] == "txt" | TSCORE.fileList[i][TSCORE.fileListFILEEXT] == "md") {
